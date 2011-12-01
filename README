@@ -23,7 +23,7 @@ another set of CCSprites on top that moved at a different speed ratio.
 
     // Easier way, the X in ScrollX means we will be moving in X axis, so line up sprites left to right
     [parallax addInfiniteScrollXWithZ:0 Ratio:ccp(0.5,0.5) Pos:ccp(100,100) Objects:clouds1, clouds2, nil];
-	
+    
     // Add to layer, sprite, etc.
     [self addChild:parallax z:-1];
 
@@ -31,26 +31,26 @@ another set of CCSprites on top that moved at a different speed ratio.
 // MANUALLY - MORE CONTROL
 
     // Doesn't use CCSpriteBatchNode
-	parallax = [CCParallaxScrollNode node];
-	
-	// Create sprites from file
-	CCSprite *clouds1 = [CCSprite spriteWithFile:@"clouds1.png"];
-	CCSprite *clouds2 = [CCSprite spriteWithFile:@"clouds2.png"];
-	
-	// Create 2 sprites, as one leaves screen, it is placed behind the other.
-	// This is what easy way does using addInfiniteObjects.
-	float totalWidth = 2 * clouds1.contentSize.width;
-	// Manually specify offset once the sprite moves off screen (e.g. to move it behind next object)
-	[parallax addChild:clouds1 z:0 Ratio:ccp(0.5,0.5) Pos:ccp(0,100) ScrollOffset:ccp(totalWidth,0)];
-	[parallax addChild:clouds2 z:0 Ratio:ccp(0.5,0.5) Pos:ccp(clouds1.contentSize.width,100) ScrollOffset:ccp(totalWidth,0)];
-	
-	// Add to layer, sprite, etc.
-	[self addChild:parallax z:-1];
+    parallax = [CCParallaxScrollNode node];
+    
+    // Create sprites from file
+    CCSprite *clouds1 = [CCSprite spriteWithFile:@"clouds1.png"];
+    CCSprite *clouds2 = [CCSprite spriteWithFile:@"clouds2.png"];
+    
+    // Create 2 sprites, as one leaves screen, it is placed behind the other.
+    // This is what easy way does using addInfiniteObjects.
+    float totalWidth = 2 * clouds1.contentSize.width;
+    // Manually specify offset once the sprite moves off screen (e.g. to move it behind next object)
+    [parallax addChild:clouds1 z:0 Ratio:ccp(0.5,0.5) Pos:ccp(0,100) ScrollOffset:ccp(totalWidth,0)];
+    [parallax addChild:clouds2 z:0 Ratio:ccp(0.5,0.5) Pos:ccp(clouds1.contentSize.width,100) ScrollOffset:ccp(totalWidth,0)];
+    
+    // Add to layer, sprite, etc.
+    [self addChild:parallax z:-1];
 
 
 // MOVING THE PARALLAX
 
-    This parts the whole point. You need to tell the parallax to move, you can use:
+    This part's the whole point. You need to tell the parallax to move, you can use:
 
         float myVelocity = -4;
         [parallax updateWithVelocity:ccp(myVelocity, 0) AndDelta:dt];
