@@ -1,0 +1,84 @@
+CCParallaxScrollNode for cocos2d, Created by Aram Kocharyan
+http://ak.net84.net/
+
+Easy to use parallax scroll class, with ability to create infinite/repeating parallax effects (like in the cartoons). Add sprites and it'll do the rest. Uses CCSpriteBatchNode for more efficient rendering when using a lot of sprites, if you want it to.
+
+For infinite parallax, the idea is to have two seamless (can be repeated) CCSprite objects. When one moves
+off the screen, it is placed behind the second object, this continues and creates the effect of an endless
+background etc. Preferably, each image should be at least as wide as the screen, but this class lets you
+use as many CCSprites as you like, so you could have 10 if you like... The minimum number to pull off the
+trick is 2 images at least as wide as the screen, but this restriction isn't enforced.
+
+Note that this class can be used just for a repeating background, it would be parallax if you had 
+another set of CCSprites on top that moved at a different speed ratio.
+
+// EASY WAY FOR INFINITE PARALLAX
+
+    // Uses CCSpriteBatchNode for more efficient rendering when using a lot of sprites
+    parallax = [CCParallaxScrollNode makeWithBatchFile:@"parallax"];
+
+    // Create sprites (this refers to frames loaded by CCParallaxScrollNode, used for CCSpriteBatchNode)
+    CCSprite *clouds1 = [CCSprite spriteWithSpriteFrameName:@"clouds1.png"];
+    CCSprite *clouds2 = [CCSprite spriteWithSpriteFrameName:@"clouds2.png"];
+
+    // Easier way, the X in ScrollX means we will be moving in X axis, so line up sprites left to right
+    [parallax addInfiniteScrollXWithZ:0 Ratio:ccp(0.5,0.5) Pos:ccp(100,100) Objects:clouds1, clouds2, nil];
+	
+    // Add to layer, sprite, etc.
+    [self addChild:parallax z:-1];
+
+
+// MANUALLY - MORE CONTROL
+
+    // Doesn't use CCSpriteBatchNode
+	parallax = [CCParallaxScrollNode node];
+	
+	// Create sprites from file
+	CCSprite *clouds1 = [CCSprite spriteWithFile:@"clouds1.png"];
+	CCSprite *clouds2 = [CCSprite spriteWithFile:@"clouds2.png"];
+	
+	// Create 2 sprites, as one leaves screen, it is placed behind the other.
+	// This is what easy way does using addInfiniteObjects.
+	float totalWidth = 2 * clouds1.contentSize.width;
+	// Manually specify offset once the sprite moves off screen (e.g. to move it behind next object)
+	[parallax addChild:clouds1 z:0 Ratio:ccp(0.5,0.5) Pos:ccp(0,100) ScrollOffset:ccp(totalWidth,0)];
+	[parallax addChild:clouds2 z:0 Ratio:ccp(0.5,0.5) Pos:ccp(clouds1.contentSize.width,100) ScrollOffset:ccp(totalWidth,0)];
+	
+	// Add to layer, sprite, etc.
+	[self addChild:parallax z:-1];
+
+
+// MOVING THE PARALLAX
+
+    This parts the whole point. You need to tell the parallax to move, you can use:
+
+        float myVelocity = -4;
+        [parallax updateWithVelocity:ccp(myVelocity, 0) AndDelta:dt];
+
+    in your update method, with -4 meaning move left. You can change the velocity to anything to speed up
+    or slow down the parallax!
+
+
+// FUNCTIONS DEFINITIONS
+
+There are several functions included for adding, removing CCSprite children, as well as creating infinite parallax, which was the point of this class to begin with. Here's what everything means.
+
+Ratio: When updating velocity of the parallax, by what ratio should the CCSprite move in X and Y?
+       This controls the magnitude of the parallax effect for each object. Make closer objects with
+       higher (X,Y) ratios (moving quickly) and distant objects with lower values.
+       
+Pos:   The starting (X,Y) position of a CCSprite. If doing it manually, you'll want the second image starting
+       behind the first etc.
+       
+Dir:   This tells the helper function addInfiniteScrollWithObjects:Z:Ratio:Pos:Dir: where to place the 
+       second and subsequent images (on the left/right and top/bottom) of the first. For a left moving
+       parallax, this would have the direction as ccp(1,0) so the second CCSprite will be placed to the
+       right of the first. ccp(-1,0) would have it to the left, and would also look exactly the same.
+       What matters is the direction it is travelling in (due to the velocity in X and/or Y), which should
+       not be confused with the "Dir:" parameter. If using the helper functions:
+           addInfiniteScrollX...   or   addInfiniteScrollY...
+       you won't need to specify the Dir.
+
+Z:     The z-index.
+
+
