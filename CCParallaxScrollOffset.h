@@ -1,9 +1,8 @@
 //
-//  MyClass.h
-//  SpaceTest
+//  CCParallaxScrollOffset.h v1.0
 //
-//  Created by Aram Kocharyan on 18/09/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Aram Kocharyan on 1/12/11
+//  http://ak.net84.net/
 //
 
 #import "cocos2d.h"
@@ -11,7 +10,6 @@
 @interface CCParallaxScrollOffset : NSObject {
 	CGPoint scrollOffset, origPosition, relVelocity, ratio;
 	CCNode *child;
-	//CGPoint origPosition, currPosition;
 }
 @property (readwrite) CGPoint scrollOffset, position, ratio;
 @property (readwrite,assign) CCNode *child;

@@ -1,9 +1,8 @@
 //
-//  MyClass.m
-//  SpaceTest
+//  CCParallaxScrollOffset.m v1.0
 //
-//  Created by Aram Kocharyan on 18/09/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Aram Kocharyan on 1/12/11
+//  http://ak.net84.net/
 //
 
 #import "CCParallaxScrollOffset.h"
@@ -28,7 +27,6 @@
 	if( (self=[super init])) {
 		child = node;
 		ratio = r;
-		//position = p;
 		scrollOffset = s;
 		relVelocity = v;
 		child.position = p;
